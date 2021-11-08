@@ -56,3 +56,17 @@ lm = LinearRegression().fit(x, y)
 r_sq = lm.score(x, y)
 
 data["predict"] = lm.predict(x)
+
+df = pd.read_csv("216nba.csv")
+
+predict_by_year = df.groupby("year")["predict"].mean()
+
+# Code from Elliot
+
+#plot = sns.regplot(x = predict_by_year.index, y = predict_by_year.values, data = predict_by_year)
+
+df["Odds_Error"] = df["wpct"] - df["vegas_odds"]
+
+error_by_year = df.groupby("year")["Odds_Error"].mean()
+
+e_plot = sns.regplot(x = error_by_year.index, y = error_by_year.values, data = error_by_year)
