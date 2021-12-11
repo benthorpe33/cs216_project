@@ -93,3 +93,26 @@ data["Odds_Error"] = data["wpct"] - data["vegas_wpct"]
 error_by_year = data.groupby("year")["Odds_Error"].mean()
 
 e_plot = sns.regplot(x = error_by_year.index, y = error_by_year.values, data = error_by_year)
+
+# %% Offensive vs. Defensive Regressions
+
+off = np.array([data["OeFG%"], data["OTOV%"], data["ORB%"], data["OFT/FGA"]]).transpose()
+defe = np.array([data["DeFG%"], data["DTOV%"], data["DRB%"], data["DFT/FGA"]]).transpose()
+
+off_lm = LinearRegression().fit(off, y)
+defe_lm = LinearRegression().fit(defe, y)
+r_sq_off = off_lm.score(off, y)
+r_sq_defe = defe_lm.score(defe, y)
+
+data["predict_off"] = off_lm.predict(off)
+data["predict_defe"] = defe_lm.predict(defe)
+
+predict_off_by_year = data.groupby("year")["predict_off"].mean()
+predict_defe_by_year = data.groupby("year")["predict_defe"].mean()
+
+print(r_sq_off, r_sq_defe)
+
+# Tests regression by offensive and defensive statistics only and finds a
+# significantly lower r-sq score than the regression including both statistics
+# Offensive and Defensive predictive accuracy were about the same though,
+# meaning neither phase of the game dominates a team's chance of success
