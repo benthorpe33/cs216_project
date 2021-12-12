@@ -116,3 +116,14 @@ print(r_sq_off, r_sq_defe)
 # significantly lower r-sq score than the regression including both statistics
 # Offensive and Defensive predictive accuracy were about the same though,
 # meaning neither phase of the game dominates a team's chance of success
+
+five = data[data["year"] == 2005]
+ten = data[data["year"] == 2010]
+fifteen = data[data["year"] == 2015]
+twenty = data[data["year"] == 2020]
+
+
+every_five = pd.concat([five, ten, fifteen, twenty])
+
+
+fives = sns.boxplot(data = every_five, x = "year", y = "3PAr")
